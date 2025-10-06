@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Clone</title>
+    <style>
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #141414;
+            --netflix-light-dark: #222;
+            --netflix-light-gray: #e5e5e5;
+            --netflix-gray: #808080;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--netflix-dark);
+            color: white;
+        }
+
+        /* Header Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 45px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            transition: all 0.3s;
+        }
+
+        .navbar.scrolled {
+            background-color: var(--netflix-dark);
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--netflix-light-gray);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .profile {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--netflix-dark) 0%, transparent 50%);
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 20%;
+            left: 5%;
+            z-index: 2;
+            max-width: 40%;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .hero-btn {
+            padding: 8px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .play-btn {
+            background-color: white;
+            color: black;
+        }
+
+        .info-btn {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: white;
+        }
+
+        /* Rows */
+        .row {
+            padding: 0 45px;
+            margin-bottom: 30px;
+        }
+
+        .row-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .row-content {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .row-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .thumbnail {
+            min-width: 250px;
+            height: 140px;
+            border-radius: 4px;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 45px;
+            color: var(--netflix-gray);
+            font-size: 13px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--netflix-gray);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px;
+            }
+            
+            .hero-content {
+                max-width: 80%;
+            }
+            
+            .hero-title {
+                font-size: 32px;
+            }
+            
+            .hero-desc {
+                font-size: 16px;
+            }
+            
+            .row {
+                padding: 0 15px;
+            }
+            
+            .thumbnail {
+                min-width: 150px;
+                height: 85px;
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1314edd5-41af-4e92-889a-36ae0a6f6d79.png" alt="Netflix logo in red with white text" class="logo">
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">TV Shows</a>
+            <a href="#">Movies</a>
+            <a href="#">New & Popular</a>
+            <a href="#">My List</a>
+        </div>
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f2274fc6-35ef-4efb-96c8-df1e3f6a9afe.png" alt="User profile icon" class="profile">
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/001ceb56-b5bb-4bc6-9566-55863e65a88c.png" alt="Featured Netflix original show with dramatic lighting and intense actors">
+        <div class="hero-content">
+            <h1 class="hero-title">Featured Show Title</h1>
+            <p class="hero-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+            <div class="hero-buttons">
+                <button class="hero-btn play-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                    </svg>
+                    Play
+                </button>
+                <button class="hero-btn info-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z" fill="currentColor"/>
+                    </svg>
+                    More Info
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Rows -->
+    <div class="row">
+        <h2 class="row-title">Popular on Netflix</h2>
+        <div class="row-content">
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1c7b6835-9217-461a-8465-2dd1b2f032fb.png" alt="Popular thriller show with dark atmosphere">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b214140c-fbcd-45b1-891c-40c770016cfe.png" alt="Romantic comedy with young couple">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d5e78ac5-d71d-4c94-a43c-4831fcb208a1.png" alt="Sci-fi series with futuristic city">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0dbf021d-2c59-4fc9-b040-7ab97cff24b0.png" alt="Historical drama with period costumes">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/25adc948-2a74-4ebb-9dbb-1b616792c577.png" alt="Crime documentary with intense scenes">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6aa991c4-0a7a-43fb-8167-b66ebf8727ff.png" alt="Animated series with colorful characters">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9aa41424-adf2-4f4b-bc98-37498cb0ada3.png" alt="Action movie with car chase scene">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h2 class="row-title">Trending Now</h2>
+        <div class="row-content">
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/26a87c23-9ecb-42de-8a4b-f3ef4656049b.png" alt="Trending comedy show with stand-up comedian">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e79b45a3-5e90-4dd4-8176-703a5f7e0740.png" alt="Trending fantasy series with magical elements">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5f120cb5-949a-4890-ac40-48a67c1b5564.png" alt="Popular documentary about nature">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/51e292be-96ae-4858-8159-da25c4405faa.png" alt="Binge-worthy drama with ensemble cast">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0e483d64-ce24-4b68-85c7-b57de092185b.png" alt="Horror movie with dark atmosphere">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5dcd0c94-4564-417a-a307-eb95ed7b5369.png" alt="Reality TV show with contestants">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/af4b4f60-f31e-426f-9542-ed597fb02012.png" alt="Popular anime series with action scenes">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h2 class="row-title">My List</h2>
+        <div class="row-content">
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5ce07b57-5c90-47ae-88e9-79aa3d94f0d5.png" alt="Saved romantic movie with beach scene">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/50484add-73fb-4eff-934b-52d1e443577b.png" alt="Saved cooking show with chef">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d4134249-00d9-4642-b6ff-f3efd9483408.png" alt="Saved children's animated series">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cc7e5e8f-2ec0-42f2-b5d6-7d1896f404d0.png" alt="Saved crime thriller with detective">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/913830b8-f7fb-4b7c-a42a-ee1fe1abfde3.png" alt="Saved sci-fi movie with space ship">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d32ee621-165a-4eb7-8e3a-fbc2c47c5a7b.png" alt="Saved travel documentary series">
+            </div>
+            <div class="thumbnail">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/48d81f13-6dfe-4dac-b01a-392368eaf4c0.png" alt="Saved action movie with fight scenes">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="#"><img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6406a868-ba1f-4e16-9242-358607bef6a2.png" alt="Facebook icon"></a>
+            <a href="#"><img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0f7538a6-5cbc-4414-9757-167ad6b23311.png" alt="Instagram icon"></a>
+            <a href="#"><img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0d2bc823-a5af-48be-af7d-35dff23b5c82.png" alt="Twitter icon"></a>
+            <a href="#"><img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cd390a8c-beb3-4b18-9a1d-be65818e92cc.png" alt="YouTube icon"></a>
+        </div>
+        <div class="footer-links">
+            <a href="#">Audio Description</a>
+            <a href="#">Help Center</a>
+            <a href="#">Gift Cards</a>
+            <a href="#">Media Center</a>
+            <a href="#">Investor Relations</a>
+            <a href="#">Jobs</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Privacy</a>
+            <a href="#">Legal Notices</a>
+            <a href="#">Cookie Preferences</a>
+            <a href="#">Corporate Information</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <p>© 2023 Netflix Clone</p>
+    </footer>
+
+    <script>
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
+
